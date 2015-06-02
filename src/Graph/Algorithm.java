@@ -112,12 +112,8 @@ public class Algorithm {
          String line;
          JSONObject jsonObject = null;
          JSONParser jsonParser = new JSONParser();
-
          while ((line = reader.readLine()) != null) {
-            
          jsonObject = (JSONObject) jsonParser.parse(line);
-            
-         System.out.println(jsonObject);   
          }
         
          JSONObject mainObj = (JSONObject)jsonObject.get("main");
@@ -127,24 +123,22 @@ public class Algorithm {
          JSONObject windObj = (JSONObject)jsonObject.get("wind");
          double windSpeed = (double)windObj.get("speed");
          double gust = (double)windObj.get("gust");
-        
          reader.close();
         
-         if(d.getTemperature()<temp && 
-         d.getTurbulence() < gust &&
-         d.getWindSpeed() < windSpeed 
-         && d.getHumidity() < humidity &&
-         d.getPressure() < pressure
-         ){
+         if(d.getTemperature()<temp && d.getTurbulence() < gust &&
+         d.getWindSpeed() < windSpeed && d.getHumidity() < humidity &&
+         d.getPressure() < pressure){
          return false;
          }
          else{
          return true;
          } 
-        
          */
-        // Demo code added for randomization of weather conditions(used for 
-        // demonstration purposes when the api isn't called)
+        
+        /*
+        Demo code added for randomization of weather conditions(used for 
+        demonstration purposes when the api isn't called)
+        */
         int i = r.nextInt(10);
         if (i > 5) {
             return false;
