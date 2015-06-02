@@ -1,23 +1,14 @@
 package Business;
 
-
 import Graph.Link;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 /**
- *
+ * The class defines all attributes associated with a drone
  * @author Rohan
  */
 public class Drone {
-    // This is a test commit
-    private static int number=0;
-    
+
+    private static int number = 0;
     private int droneNumber;
     private String droneName;
     private Link initialCordinate;
@@ -28,9 +19,8 @@ public class Drone {
     private double currentSpeed;
     private double currentAltitude;
     private Link currentCordinate;
-    private Link[] tempCordinateList; // to store the o/p of the algorithm
-    private Link[] finalCordinateList; // to store the final cordinate list (final path) 
-    
+    private Link[] tempCordinateList; 
+    private Link[] finalCordinateList;
     private double windSpeed;
     private double temperature;
     private double turbulence;
@@ -38,14 +28,12 @@ public class Drone {
     private double icing;
 
     public Drone() {
-    initialCordinate = new Link(0,0);
-    finalCordinate = new Link(0,0);
-    droneNumber = number;
-    number++;
+        initialCordinate = new Link(0, 0);
+        finalCordinate = new Link(0, 0);
+        droneNumber = number;
+        number++;
     }
-    
-    
-    
+
     public String getDroneName() {
         return droneName;
     }
@@ -54,7 +42,6 @@ public class Drone {
         this.droneName = droneName;
     }
 
-    
     public Link getInitialCordinate() {
         return initialCordinate;
     }
@@ -179,10 +166,8 @@ public class Drone {
         return droneNumber;
     }
 
-    
-    
-    public String toString(){
+    public String toString() {
         return droneName;
     }
-    
+
 }
