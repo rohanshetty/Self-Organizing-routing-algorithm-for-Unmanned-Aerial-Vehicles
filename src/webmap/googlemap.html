@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+  html { height: 100% }
+  body { height: 100%; margin: 0px; padding: 0px }
+  #map_canvas { height: 100%; background-color: #666970; }
+</style>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false">
+</script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript">
+    
+    var droneFocusNo = 99999;
+    var flag=0;
+    var flagObj = new Object();
+    flagObj.make = "false";
+    var z = 1;
+    var temp = [];
+    
+    var neighborhoods2 = [
+new google.maps.LatLng(42.340444030021416 , -71.1014165680054),
+new google.maps.LatLng(42.340442998572016 , -71.10143623713442)
+    ];
+    
+var neighborhoods = [
+new google.maps.LatLng(42.339347 , -71.089714),
+new google.maps.LatLng(42.339350550851144 , -71.08974257406855)
+];
+
+var neighbor = [];
+var flightPaths = [];
+
+//var neighbor = [];
+//        [neighborhoods,neighborhoods2];
+var fx = [];
+fx.push(1);
+var something = []
+
+
+
+
+  function initialize() {
+      
+    var latlng = new google.maps.LatLng(42.32599290979131 , -71.1116439950517);
+    var markers = [];
+    var mar = [];
+
+    var myOptions = {
+        
+      zoom: 16,
+      center: neighborhoods[0],
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: false,
+      navigationControl: false,
+      rotateControl:true,
+      streetViewControl: false,
+      backgroundColor: "#666970"
+    };
+    
+    document.geocoder = new google.maps.Geocoder();
+    document.map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+    
+      var map=document.map;
+      
+    
+    
+    document.getCurrentLat = function getCurrentLat(no) {
+        return neighbor[no][mar[no]].lat();
+    }
+    
+    document.getCurrentLng = function getCurrentLng(no) {
+        return neighbor[no][mar[no]].lng();
+    }
+    
+    document.zoomIn = function zoomIn() {
+    	var zoomLevel = document.map.getZoom();
+    	if (zoomLevel <= 20) document.map.setZoom(zoomLevel + 1);
+    }
+    
+    document.zoomOut = function zoomOut() {
+    	var zoomLevel = document.map.getZoom();
+    	if (zoomLevel > 0) document.map.setZoom(zoomLevel - 1);
+    }
+    
+    document.setMapTypeRoad = function setMapTypeRoad() {
+    	document.map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+    }
+    document.setMapTypeSatellite = function setMapTypeSatellite() {
+    	document.map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+    }
+    document.setMapTypeHybrid = function setMapTypeHybrid() {
+    	document.map.setMapTypeId(google.maps.MapTypeId.HYBRID);
+    }
+    document.setMapTypeTerrain = function setMapTypeTerrain() {
+    	document.map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
+    }
+    
+    document.goToLocation = function goToLocation(searchString) {
+        document.geocoder.geocode( {'address': searchString}, function(results, status) {        
+      	  if (status == google.maps.GeocoderStatus.OK) {
+            document.map.setCenter(results[0].geometry.location);
+          } else {
+            alert("Geocode was not successful for the following reason: " + status);
+          }
+        }); 
+    }
+    
+    document.goToCordinates = function goToCordinates(lat,lon){
+      marker = new google.maps.Marker({
+      position : new google.maps.LatLng(lat,lon),
+      map: map
+//      draggable : false,
+//      animation : google.maps.Animation.drop
+    });
+    }
+    
+
+      document.setMarkerInitialPositionAt = function setMarkerInitialPositionAt(no){
+      marker = new google.maps.Marker({
+//      position : new google.maps.LatLng(lat,lon),
+      position : neighbor[no],
+      map: map
+//      draggable : false,
+//      animation : google.maps.Animation.drop
+    });
+    }
+    
+//    document.setMarkerAt = function setMarkerAt(lat,lon){
+    document.addPosition = function addPosition(){
+     neighbor[0].push(new google.maps.LatLng(37.180842, -119.691329));
+    }
+
+
+    document.changeFlag= function changeFlag(no){
+//    neighbor[no][mar[no+10]] = new google.maps.LatLng(00,00);
+      neighbor[no].splice(mar[no]+50, neighbor[no].length-mar[no]-11);
+//    neighbor[no].splice(mar[no]+10, 20);
+    }
+     
+        document.setDroneFocusNo = function setDroneFocusNo(x) {
+        droneFocusNo = x;
+    }
+    document.setMapCenter = function setMapCenter() {
+        if(droneFocusNo ==99999){
+            return;
+        }
+        map.setCenter(neighbor[droneFocusNo][mar[droneFocusNo]]);
+    }
+
+    document.setMarkerAt = function setMarkerAt(no){
+//      var position = new google.maps.LatLng(42,-71);
+        mar[no]++;
+        markers[no].setPosition(neighbor[no][mar[no]]);   
+        document.setMapCenter();
+        
+//        map.setCenter(neighbor[no][mar[no]]);
+//        
+//        var t = [];
+//        temp.push(t);
+        
+//        t.push(neighbor[no][mar[no]]);
+//        t.push(neighbor[no][mar[no]-1]);
+       
+//        var flightPath = new google.maps.Polyline({
+////            path : neighbor[no],
+//                path: t,
+//                geodesic: true,
+//                strokeColor: '#FF0000',
+//                strokeOpacity: 1.0,
+//                strokeWeight: 2,
+//                map: map
+//            });
+//            flightPaths.push(flightPath);
+//            t.splice(0,temp.length-1);
+//            
+    }
+    
+    document.initPositions = function initPositions(no,obj){
+        var p = [];
+        
+        for (var i in obj.arr) {
+            var inner = obj.arr[i];
+            var lat = inner.lat;
+            var lon = inner.lon;
+            var latlng = new google.maps.LatLng(lat,lon);
+            p.push(latlng);
+            
+//            p[i] = obj.arr[i];
+//            var str = JSON.stringify(obj.arr[i]);
+//            p.push(str);
+//            p.push(obj.arr[i]); 
+        }
+        
+//        document.write(p);
+        neighbor.push(p);
+        var x = 0;
+        mar.push(x);
+    }
+    
+    document.setFocusOn = function setFocusOn(no){
+        
+    }
+    
+   
+     document.beginMovement = function beginMovement(no, speed){
+//        neighbor.push(neighborhoods2);
+//        var x = 0;
+//        mar.push(x);
+//        temp.splice(0,temp.length-1);
+
+        var imagestart = 'letter_s.png';
+        start = new google.maps.Marker({
+//      position : new google.maps.LatLng(lat,lon),
+        position : neighbor[no][0],
+        map: map,
+        icon:imagestart
+        
+//      draggable : false,
+//      animation : google.maps.Animation.drop
+        });
+//        ../../Images/loadingImage.GIF
+        var imagefinish = 'finish.png';
+        end = new google.maps.Marker({
+//      position : new google.maps.LatLng(lat,lon),
+        position : neighbor[no][neighbor[no].length-1],
+        map: map,
+        icon:imagefinish
+//      draggable : false,
+//      animation : google.maps.Animation.drop
+        });
+           
+        var droneImage = 'airport.png';
+        marker = new google.maps.Marker({
+//      position : new google.maps.LatLng(lat,lon),
+        position : neighbor[no][0],
+        map: map,
+        icon : droneImage
+//      draggable : false,
+//      animation : google.maps.Animation.drop
+        });
+        
+        var flightPath = new google.maps.Polyline({
+                path: neighbor[no],
+                geodesic: true,
+                strokeColor: '#FF0000',
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                map: map
+            });
+        markers.push(marker);
+//        
+        for (var i = 0; i < neighbor[no].length-1; i++) {
+                setTimeout(function () {
+                    document.setMarkerAt(no);
+                }, i * speed);
+
+        if(fx[0]==0){
+            break;
+        }   
+    }
+    
+//    temp.splice(0,temp.length-1);
+    
+     }
+     
+     document.doSomething = function doSomething() {
+       
+        
+//        var latlng = new google.maps.LatLng(31.99900979131 , -55.6631884);
+//        neighborhoods.push(latlng);
+//        document.write(neighbor[0]);
+//        map.rotate(Math.PI/6);
+        document.write(neighbor[0][5].lat());
+        
+        
+//        var view2D = map.getView().getView2D(); 
+////get the current radians of the map's angle
+//        var currentRadians=map.getView().getView2D().getRotation();     
+////add .5 radians to the map's current getRotation() value
+//        view2D.setRotation(currentRadians+1.5);
+        
+    }
+//            ../../Images/loadingImage.GIF
+    
+    document.getAngleBetweenPoints = function getAngleBetweenPoints(no) {
+        
+        var latnew = neighbor[no][mar[no]].lat();
+        var lonnew = neighbor[no][mar[no]].lng();
+        var latold = neighbor[no][mar[no-1]].lat();
+        var lonold = neighbor[no][mar[no-1]].lng();
+        document.write("reached1");
+        var dlon = (lonnew-lonold)* (pi/180);
+        var latnew2 =  latnew * (pi/180);
+        var lonnew2 = lonnew * (pi/180);
+        var latold2 = latold * (pi/180);
+        var lonold2 = lonold * (pi/180);
+        document.write("reached2");
+        var y = Math.sin(dlon) * Math.cos(latnew2);
+        var x = Math.cos(latold2) * Math.sin(latnew2) - Math.sin(latold2) * Math.cos(latnew2) * Math.cos(dlon);
+        var brng = Math.atan2(y,x);
+        brng = brng * (pi/180);
+        document.write(brng);
+        brng = (brng + 360)%360;
+        brng = document.returnCorrectionAngle(brng);
+        return brng;
+    }
+    
+    document.returnCorrectionAngle = function returnCorrectionAngle(oldAngle){
+        if(oldAngle>0 && oldAngle<=90){
+            return (90-oldAngle);
+        }
+        else if(oldAngle>90 && oldAngle<=180){
+            var x = 180 - oldAngle;
+            return (x+270);
+        }
+        else if(oldAngle>180 && oldAngle<=270){
+            var x = 270-oldAngle;
+            return (x+180);
+        }
+        else if(oldAngle>270 && oldAngle<=360){
+            var x = 360-oldAngle;
+            return (x+90);
+        }
+        return -1;
+    }
+    
+    
+   
+     
+    
+//  var fac = document.getElementById()
+  }
+  
+  
+ window.onkeypress = function(event) {
+   if (event.keyCode == 52) {
+       
+      document.write(document.getAngleBetweenPoints(0));
+//      document.write("reached1");
+      
+   }
+}
+
+
+
+</script>
+</head>
+<body onload="initialize()">
+  <div id="map_canvas" style="width:100%; height:100%"></div>
+  
+  <div id="panel" style="margin-left: 100px">
+
+  </div>
+</body>
+</html>

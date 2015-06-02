@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="WebMapFinal_browser.jnlp">
+  <information>
+    <title>WebMapFinal</title>
+    <vendor>Rohan</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <jfx:javafx-runtime version="2.2+" href="http://javadl.sun.com/webapps/download/GetFile/javafx-latest/windows-i586/javafx2.jnlp"/>
+  </resources>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="WebMapFinal.jar" size="117794" download="eager" />
+    <jar href="lib/commons-io-2.4-javadoc.jar" size="749948" download="eager" />
+    <jar href="lib/commons-io-2.4-sources.jar" size="259526" download="eager" />
+    <jar href="lib/commons-io-2.4-test-sources.jar" size="212412" download="eager" />
+    <jar href="lib/commons-io-2.4-tests.jar" size="321353" download="eager" />
+    <jar href="lib/commons-io-2.4.jar" size="198397" download="eager" />
+    <jar href="lib/java-json-schema.jar" size="332730" download="eager" />
+    <jar href="lib/json-simple-1.1.jar" size="18594" download="eager" />
+  </resources>
+<security>
+  <all-permissions/>
+</security>
+  <applet-desc  width="800" height="600" main-class="webmap.WebMap"  name="WebMapFinal" >
+  </applet-desc>
+  <update check="always"/>
+</jnlp>
